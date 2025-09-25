@@ -30,10 +30,10 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 # ===================== DATABASE =====================
 def get_db_connection():
     return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST", "mainline.proxy.rlwy.net"),
-        user=os.getenv("MYSQLUSER", "root"),
-        password=os.getenv("MYSQLPASSWORD", ""),
-        database=os.getenv("MYSQLDATABASE", "railway"),
+        host=os.getenv("MYSQLHOST"),
+        user=os.getenv("MYSQLUSER"),
+        password=os.getenv("MYSQLPASSWORD"),
+        database=os.getenv("MYSQLDATABASE"),
         port=int(os.getenv("MYSQLPORT", 25378))
     )
     
