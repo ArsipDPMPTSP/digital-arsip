@@ -34,7 +34,7 @@ def get_db_connection():
         user=os.getenv("MYSQLUSER"),
         password=os.getenv("MYSQLPASSWORD"),
         database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT", 25378))
+        port=int(os.getenv("MYSQLPORT", 32881))
     )
     
 # ---------------- OAuth helpers ----------------
