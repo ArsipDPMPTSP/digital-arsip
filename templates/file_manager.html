@@ -1,0 +1,146 @@
+{% extends "base.html" %} 
+{% block content %}
+<h2>🗂️ File Manager</h2>
+
+<!-- Search & Sorting -->
+<div class="d-flex justify-content-between mb-3 flex-wrap gap-2">
+  <!-- Pencarian -->
+  <input type="text" id="searchInput" class="form-control w-auto" placeholder="🔍 Cari file..." />
+
+  <!-- Dropdown sorting -->
+  <select id="sortSelect" class="form-select w-auto">
+    <option value="nameAsc">🔤 Nama (A → Z)</option>
+    <option value="nameDesc">🔤 Nama (Z → A)</option>
+    <option value="dateNew">🕒 Terbaru</option>
+    <option value="dateOld">🕒 Terlama</option>
+    <option value="sizeBig">📦 Ukuran Terbesar</option>
+    <option value="sizeSmall">📦 Ukuran Terkecil</option>
+  </select>
+</div>
+
+<!-- Lightbox modal -->
+<div id="lightboxModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); justify-content: center; align-items: center; z-index: 999">
+  <span style="position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer" onclick="closeLightbox()">&times;</span>
+  <img id="lightboxImg" src="" style="max-width: 90%; max-height: 90%; border: 3px solid white; border-radius: 5px" />
+</div>
+
+<!-- Container file cards -->
+<div id="fileContainer" class="d-flex flex-wrap gap-4 mt-3">
+  {% for f in files %}
+  <div class="card file-card text-center" data-name="{{ f.name | lower }}" data-date="{{ f.date|default('2000-01-01') }}" data-size="{{ f.size|default(0) }}">
+    {% if f.is_image %}
+    <img src="{{ url_for('uploaded_file', filename=f.name) }}" class="file-img" onclick="openLightbox(this.src)" />
+    {% else %}
+    <div class="file-icon">📄</div>
+    {% endif %}
+    <div class="card-body p-2">
+      <p class="card-text text-truncate">{{ f.name }}</p>
+      <small class="text-muted d-block">📅 {{ f.date }} | 📦 {{ (f.size/1024)|round(1) }} KB</small>
+      <div class="btn-group mt-1">
+        <a href="{{ url_for('hapus_file', filename=f.name) }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus file ini?')">Hapus</a>
+        <a href="{{ url_for('uploaded_file', filename=f.name) }}" target="_blank" class="btn btn-primary btn-sm">Download</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  function openLightbox(src) {
+    document.getElementById("lightboxImg").src = src;
+    document.getElementById("lightboxModal").style.display = "flex";
+  }
+  function closeLightbox() {
+    document.getElementById("lightboxModal").style.display = "none";
+  }
+
+  // Search filter
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    let query = this.value.toLowerCase();
+    let cards = document.querySelectorAll("#fileContainer .file-card");
+
+    cards.forEach((card) => {
+      let name = card.dataset.name;
+      card.style.display = name.includes(query) ? "block" : "none";
+    });
+  });
+
+  // Sorting function
+  document.getElementById("sortSelect").addEventListener("change", function () {
+    let option = this.value;
+    let container = document.getElementById("fileContainer");
+    let cards = Array.from(container.getElementsByClassName("file-card"));
+
+    cards.sort((a, b) => {
+      if (option === "nameAsc") return a.dataset.name.localeCompare(b.dataset.name);
+      if (option === "nameDesc") return b.dataset.name.localeCompare(a.dataset.name);
+      if (option === "dateNew") return new Date(b.dataset.date) - new Date(a.dataset.date);
+      if (option === "dateOld") return new Date(a.dataset.date) - new Date(b.dataset.date);
+      if (option === "sizeBig") return b.dataset.size - a.dataset.size;
+      if (option === "sizeSmall") return a.dataset.size - b.dataset.size;
+    });
+
+    container.innerHTML = "";
+    cards.forEach((c) => container.appendChild(c));
+  });
+</script>
+
+<style>
+  .file-card {
+    width: 160px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .file-img {
+    height: 120px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .file-img:hover {
+    transform: scale(1.05);
+  }
+
+  .file-icon {
+    font-size: 50px;
+    padding: 35px 0;
+    color: #555;
+  }
+
+  .text-truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    transition: all 0.2s;
+  }
+  .btn-danger:hover {
+    background-color: #ff4c4c;
+    transform: scale(1.05);
+  }
+  .btn-primary:hover {
+    background-color: #2b8cff;
+    transform: scale(1.05);
+  }
+
+  #lightboxModal img {
+    transition: transform 0.3s;
+  }
+</style>
+{% endblock %}

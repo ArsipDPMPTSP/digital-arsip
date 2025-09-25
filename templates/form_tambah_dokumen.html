@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block content %}
+<h2 class="mb-4">📥 Tambah Dokumen</h2>
+
+<form action="{{ url_for('tambah_dokumen') }}" method="POST" enctype="multipart/form-data" class="mb-4">
+  <div class="mb-2">
+    <input type="text" name="nama_pemilik" placeholder="Nama Pemilik" class="form-control" required />
+  </div>
+  <div class="mb-2">
+    <input type="text" name="nama_perusahaan" placeholder="Nama Perusahaan" class="form-control" required />
+  </div>
+  <div class="mb-2">
+    <input type="text" name="nomor_surat" placeholder="Nomor Surat" class="form-control" required />
+  </div>
+  <div class="mb-2">
+    <input type="text" name="tahun" placeholder="Tahun" class="form-control" maxlength="4" required />
+  </div>
+  <div class="mb-2">
+    <textarea name="alamat" placeholder="Alamat" class="form-control" required></textarea>
+  </div>
+
+  <div class="mb-2">
+    <label for="kategori_id" class="form-label">Kategori</label>
+    <select name="kategori_id" id="kategori_id" class="form-select" required>
+      <option value="">-- Pilih Kategori --</option>
+      {% for k in kategori %}
+      <option value="{{ k.id }}">{{ k.nama }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-2">
+    <label for="jenis_id" class="form-label">Jenis</label>
+    <select name="jenis_id" id="jenis_id" class="form-select">
+      <option value="">-- Pilih Jenis --</option>
+    </select>
+  </div>
+
+  <div class="mb-2">
+    <input type="file" name="file" class="form-control" />
+  </div>
+
+  <button class="btn btn-success">Simpan Dokumen</button>
+  <a href="{{ url_for('dokumen') }}" class="btn btn-secondary">Kembali</a>
+</form>
+
+<script>
+  document.getElementById("kategori_id").addEventListener("change", function () {
+    const kategoriId = this.value;
+    const jenisSelect = document.getElementById("jenis_id");
+    jenisSelect.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+
+    if (kategoriId) {
+      fetch(`/get_jenis/${kategoriId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((j) => {
+            const option = document.createElement("option");
+            option.value = j.id;
+            option.textContent = j.nama;
+            jenisSelect.appendChild(option);
+          });
+        });
+    }
+  });
+</script>
+{% endblock %}

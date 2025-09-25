@@ -1,0 +1,67 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+}
+
+.sidebar .nav-link {
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgba(84, 3, 235, 0.2);
+}
+
+.content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border-radius: 12px;
+}
+
+/* Sidebar button style */
+.sidebar a {
+  display: block;
+  padding: 12px 20px;
+  margin-bottom: 5px;
+  color: #fff;
+  background-color: #4c6ef5;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Hover effect */
+.sidebar a:hover {
+  background-color: #2b8cff;
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Active button effect */
+.sidebar a.active {
+  background-color: #1971c2;
+  box-shadow: 0 0 10px rgba(25, 113, 194, 0.6);
+}
+
+/* Optional: add icon effect if using icons */
+.sidebar a i {
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar a:hover i {
+  transform: rotate(15deg);
+}

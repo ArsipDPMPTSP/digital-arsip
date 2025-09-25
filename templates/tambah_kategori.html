@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Tambah Jenis Ijin{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">📥 Tambah Jenis Ijin</h2>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('tambah_kategori') }}">
+      <div class="mb-3">
+        <input type="text" name="nama" class="form-control" placeholder="Nama jenis ijin" required />
+      </div>
+      <button type="submit" class="btn btn-success">Simpan</button>
+      <a href="{{ url_for('kategori') }}" class="btn btn-secondary">Kembali</a>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

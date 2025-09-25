@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block title %}Detail Kategori{% endblock %} {% block content %}
+<!-- Tombol kembali dan breadcrumb -->
+<div class="d-flex align-items-center mb-4">
+  <a href="{{ url_for('kategori') }}" class="btn btn-sm btn-outline-secondary me-3"> ← Kembali </a>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('index') }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('kategori') }}">Kategori</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ kategori.nama }}</li>
+    </ol>
+  </nav>
+</div>
+
+<h2 class="mb-3">📁 {{ kategori.nama }}</h2>
+
+<!-- Edit kategori -->
+<div class="card mb-4 shadow-sm">
+  <div class="card-header bg-warning text-dark">Edit Kategori</div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('edit_kategori', id=kategori.id) }}" class="d-flex gap-2">
+      <input type="text" name="nama" value="{{ kategori.nama }}" class="form-control" required />
+      <button type="submit" class="btn btn-warning">Simpan</button>
+      <a href="{{ url_for('hapus_kategori', id=kategori.id) }}" onclick="return confirm('Yakin hapus kategori ini?')" class="btn btn-danger">Hapus</a>
+    </form>
+  </div>
+</div>
+
+<!-- Jenis-jenis dalam kategori -->
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">Jenis dalam kategori ini</div>
+  <div class="card-body">
+    <ul class="list-group mb-3">
+      {% for j in jenis %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ j.nama }}
+        <div class="btn-group btn-group-sm">
+          <a href="{{ url_for('edit_jenis', id=j.id) }}" class="btn btn-warning btn-sm">Edit</a>
+          <a href="{{ url_for('hapus_jenis', id=j.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus jenis ini?')">Hapus</a>
+        </div>
+      </li>
+      {% else %}
+      <li class="list-group-item text-muted">Belum ada jenis</li>
+      {% endfor %}
+    </ul>
+
+    <!-- Form tambah jenis -->
+    <form method="POST" action="{{ url_for('tambah_jenis') }}" class="d-flex gap-2">
+      <input type="hidden" name="kategori_id" value="{{ kategori.id }}" />
+      <input type="text" name="nama" class="form-control" placeholder="Nama jenis" required />
+      <button class="btn btn-success" type="submit">Tambah Jenis</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">✏️ Edit Dokumen</h2>
+
+<form action="{{ url_for('edit_dokumen', id=dokumen.id) }}" method="POST" enctype="multipart/form-data" class="mb-4">
+  <!-- Nama Pemilik -->
+  <div class="mb-2">
+    <input type="text" name="nama_pemilik" value="{{ dokumen.nama_pemilik }}" class="form-control" placeholder="Nama Pemilik" required />
+  </div>
+
+  <!-- Nama Perusahaan -->
+  <div class="mb-2">
+    <input type="text" name="nama_perusahaan" value="{{ dokumen.nama_perusahaan }}" class="form-control" placeholder="Nama Perusahaan" required />
+  </div>
+
+  <!-- Nomor Surat -->
+  <div class="mb-2">
+    <input type="text" name="nomor_surat" value="{{ dokumen.nomor_surat }}" class="form-control" placeholder="Nomor Surat" required />
+  </div>
+
+  <!-- Alamat -->
+  <div class="mb-2">
+    <textarea name="alamat" class="form-control" placeholder="Alamat" required>{{ dokumen.alamat }}</textarea>
+  </div>
+
+  <!-- Dropdown Kategori -->
+  <div class="mb-2">
+    <label for="kategori" class="form-label">Kategori</label>
+    <select name="kategori_id" id="kategori" class="form-control" required>
+      <option value="">-- Pilih Kategori --</option>
+      {% for k in kategori %}
+      <option value="{{ k.id }}" {% if dokumen.kategori_id == k.id %}selected{% endif %}>{{ k.nama }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Dropdown Jenis -->
+  <div class="mb-2">
+    <label for="jenis" class="form-label">Jenis</label>
+    <select name="jenis_id" id="jenis" class="form-control">
+      <option value="">-- Pilih Jenis --</option>
+      {% for j in jenis %}
+      <option value="{{ j.id }}" {% if dokumen.jenis_id == j.id %}selected{% endif %}>{{ j.nama }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- File Upload (opsional ganti file lama) -->
+  <div class="mb-2">
+    <label class="form-label">File Dokumen (kosongkan jika tidak ingin diganti)</label>
+    <input type="file" name="file" class="form-control" />
+    {% if dokumen.file_name %}
+      <small class="text-muted">File saat ini: {{ dokumen.file_name }}</small>
+    {% endif %}
+  </div>
+
+  <button class="btn btn-success">💾 Simpan Perubahan</button>
+  <a href="{{ url_for('dokumen') }}" class="btn btn-secondary">⬅️ Kembali</a>
+</form>
+
+<script>
+document.getElementById("kategori").addEventListener("change", function () {
+  const kategoriId = this.value;
+  const jenisSelect = document.getElementById("jenis");
+
+  jenisSelect.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+
+  if (kategoriId) {
+    fetch(`/get_jenis/${kategoriId}`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(j => {
+          const option = document.createElement("option");
+          option.value = j.id;
+          option.textContent = j.nama;
+          jenisSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error("Error:", error));
+  }
+});
+</script>
+{% endblock %}

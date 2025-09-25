@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Arsip Digital{% endblock %}</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fc;
+        color: #333;
+      }
+
+      /* Sidebar gradien */
+      .sidebar {
+        background: linear-gradient(180deg, #4e73df, #6f42c1);
+        color: #fff;
+        min-height: 100vh;
+      }
+
+      .sidebar a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        padding: 10px 15px;
+        border-radius: 10px;
+        transition: background 0.2s;
+      }
+
+      .sidebar a:hover,
+      .sidebar .active {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Card */
+      .card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h5,
+      .card p {
+        margin: 0;
+      }
+
+      /* Dashboard icons */
+      .dashboard-icon {
+        font-size: 2rem;
+        color: #4e73df;
+        margin-bottom: 10px;
+      }
+
+      /* Navbar atas */
+      .navbar {
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: linear-gradient(180deg, #4e73df, #6f42c1);
+        min-height: 100vh;
+        padding: 20px 10px;
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        color: #f8fafc;
+        font-weight: 400;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+      }
+      .sidebar a:hover {
+        background-color: #3b82f6;
+        transform: translateX(6px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+      }
+      .sidebar a.active {
+        background-color: #2563eb;
+        box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
+      }
+
+      /* Navbar */
+      .navbar .nav-link {
+        font-weight: 500;
+        color: #1e293b;
+        transition: all 0.3s ease;
+      }
+      .navbar .nav-link:hover {
+        color: #2563eb;
+        transform: translateY(-2px);
+      }
+
+      /* Footer */
+      .footer {
+        background: #f8f9fc;
+        color: #000000;
+        padding: 15px 0;
+        margin-top: 30px;
+        font-size: 11px;
+        /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
+      }
+      .footer-logo {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        margin-right: 6px;
+      }
+
+      /* Efek kartu */
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex" id="wrapper">
+      <!-- Sidebar -->
+      <nav id="sidebar" class="sidebar text-white">
+        <div class="text-center mb-4">
+          <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo Kantor" class="img-fluid mb-2" style="width: 180px; height: 50px; object-fit: cover" />
+          <h5 class="mt-2">Arsip Digital</h5>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <a href="{{ url_for('index') }}" class="nav-link text-white"><i class="bi bi-house"></i> Dashboard</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ url_for('dokumen') }}" class="nav-link text-white"><i class="bi bi-file-earmark-text"></i> Dokumen</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ url_for('kategori') }}" class="nav-link text-white"><i class="bi bi-folder"></i> Jenis Ijin</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a href="{{ url_for('file_manager') }}" class="nav-link text-white"><i class="bi bi-hdd"></i> File Manager</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Page Content -->
+      <div id="page-content" class="flex-grow-1 d-flex flex-column">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#"> <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%" /> DPMPTSP Kota Kupang </a>
+            <div class="collapse navbar-collapse">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('tentang') }}"><i class="bi bi-info-circle"></i> Tentang</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('profil') }}"><i class="bi bi-person-circle"></i> Admin</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="container-fluid p-4 flex-grow-1">{% block content %}{% endblock %}</main>
+
+        <!-- Footer -->
+        <footer class="footer mt-auto">
+          <div class="container text-center d-flex justify-content-center align-items-center">
+            2025 ©
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 15px; vertical-align: middle; margin-right: 8px; margin-left: 8px; border-radius: 3px" />
+            Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Kupang
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block title %}Tentang{% endblock %} {% block content %}
+
+<!-- Bagian Profil -->
+<div class="container my-5">
+  <div class="row align-items-center">
+    <!-- Gambar -->
+    <div class="col-md-6">
+      <img src="{{ url_for('static', filename='img/profil.jpg') }}" class="img-fluid rounded-4 shadow" alt="Profil DPMPTSP" />
+    </div>
+
+    <!-- Teks -->
+    <div class="col-md-6">
+      <h2 class="text-primary fw-bold">Profil DPMPTSP Kota Kupang</h2>
+      <p class="mt-3">Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu (DPMPTSP) Kota Kupang merupakan lembaga yang memegang peranan dan fungsi strategis di bidang penyelenggaraan pelayanan perizinan terpadu Kota Kupang.</p>
+      <p>Tugas pokok Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Kupang adalah menyelenggarakan urusan pemerintahan bidang penanaman modal dan bidang pelayanan terpadu satu pintu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bagian Visi Misi Maklumat -->
+<div class="container mb-5">
+  <div class="row text-center g-4">
+    <!-- Visi -->
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-lightbulb text-primary fs-1"></i>
+          </div>
+          <h5 class="card-title fw-bold">VISI</h5>
+          <p class="card-text">Terwujudnya pelayanan prima dalam pelayanan perizinan menuju Kota Kupang yang layak huni, cerdas, mandiri dan sejahtera dengan tata kelola bebas KKN.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misi -->
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-bar-chart text-primary fs-1"></i>
+          </div>
+          <h5 class="card-title fw-bold">MISI</h5>
+          <p class="card-text">Memberikan pelayanan yang memuaskan. Memelopori pemberantasan korupsi. Meningkatkan iklim usaha yang berdampak pada kesejahteraan rakyat.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maklumat -->
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-file-text text-primary fs-1"></i>
+          </div>
+          <h5 class="card-title fw-bold">MAKLUMAT PELAYANAN</h5>
+          <p class="card-text">
+            Melayani dengan kasih secara cepat, tepat dan akurat karena kepuasan pelanggan adalah kebanggaan kami. Menyelenggarakan pelayanan sesuai standar yang telah ditetapkan, dan siap menerima sanksi apabila tidak menepati maklumat
+            ini.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bagian Lokasi / Alamat -->
+<div class="container mb-5">
+  <h3 class="text-center text-primary fw-bold mb-4">Alamat Kantor</h3>
+  <p class="text-center mb-3">Jl. Frans Seda No.1, Kota Kupang, Nusa Tenggara Timur</p>
+
+  <div class="ratio ratio-16x9 shadow rounded-4">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.889786842727!2d123.60805567425875!3d-10.154997771221763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2c569c8a94e338e9%3A0x1c44f31b68b143b0!2sDPMPTSP%20Kota%20Kupang!5e0!3m2!1sid!2sid!4v1694599372014!5m2!1sid!2sid"
+      width="600"
+      height="450"
+      style="border: 0"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    >
+    </iframe>
+  </div>
+</div>
+
+{% endblock %}

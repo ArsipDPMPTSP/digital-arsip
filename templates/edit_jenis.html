@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Edit Jenis{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">✏️ Edit Jenis</div>
+    <div class="card-body">
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Nama Jenis</label>
+          <input type="text" name="nama" class="form-control" value="{{ jenis.nama }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <a href="{{ url_for('kategori') }}" class="btn btn-secondary">Batal</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
