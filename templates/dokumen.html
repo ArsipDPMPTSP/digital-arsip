@@ -1,15 +1,16 @@
 {% extends "base.html" %} {% block content %}
 <h2 class="mb-4">📄 Manajemen Dokumen</h2>
 
-<!-- 🔍 Pencarian -->
-<div class="d-flex justify-content-between mb-2">
-  <form method="GET" action="{{ url_for('dokumen') }}" class="d-flex" style="max-width: 300px">
+<!-- 🔍 Pencarian & Tambah -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+  <!-- Form pencarian -->
+  <form method="GET" action="{{ url_for('dokumen') }}" class="d-flex w-100 w-md-auto" style="max-width: 400px">
     <input type="text" name="search" value="{{ search or '' }}" placeholder="🔍 Cari dokumen..." class="form-control form-control-sm me-2" />
     <button class="btn btn-sm btn-outline-secondary">Cari</button>
   </form>
 
-  <!-- Tombol Tambah -->
-  <a href="{{ url_for('form_tambah_dokumen') }}" class="btn btn-primary btn-sm">+ Tambah Dokumen</a>
+  <!-- Tombol tambah -->
+  <a href="{{ url_for('form_tambah_dokumen') }}" class="btn btn-primary btn-sm w-100 w-md-auto">+ Tambah Dokumen</a>
 </div>
 
 <!-- 📄 Daftar Dokumen -->
