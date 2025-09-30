@@ -197,64 +197,10 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Sidebar toggle document.getElementById("menu-toggle").addEventListener("click", function () { document.getElementById("sidebar").classList.toggle("active"); });
+      // Sidebar toggle
+      document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("sidebar").classList.toggle("active");
+      });
     </script>
   </body>
 </html>
-    // </script>
-    // <script>
-  //     function closeLightbox() {
-  //       document.getElementById("lightboxModal").style.display = "none";
-  //     }
-
-  //     // Pencarian file
-  //     document.getElementById("searchInput").addEventListener("input", function () {
-  //       const query = this.value.toLowerCase();
-  //       const files = document.querySelectorAll(".file-card");
-  //       files.forEach((file) => {
-  //         const name = file.getAttribute("data-name");
-  //         if (name.includes(query)) {
-  //           file.parentElement.style.display = "block";
-  //         } else {
-  //           file.parentElement.style.display = "none";
-  //         }
-  //       });
-  //     });
-
-  //     // Sorting file
-  //     document.getElementById("sortSelect").addEventListener("change", function () {
-  //       const criteria = this.value;
-  //       const container = document.getElementById("fileContainer");
-  //       const files = Array.from(container.children);
-
-  //       files.sort((a, b) => {
-  //         const nameA = a.querySelector(".file-card").getAttribute("data-name");
-  //         const nameB = b.querySelector(".file-card").getAttribute("data-name");
-  //         const dateA = new Date(a.querySelector(".file-card").getAttribute("data-date"));
-  //         const dateB = new Date(b.querySelector(".file-card").getAttribute("data-date"));
-  //         const sizeA = parseInt(a.querySelector(".file-card").getAttribute("data-size"));
-  //         const sizeB = parseInt(b.querySelector(".file-card").getAttribute("data-size"));
-
-  //         switch (criteria) {
-  //           case "nameAsc":
-  //             return nameA.localeCompare(nameB);
-  //           case "nameDesc":
-  //             return nameB.localeCompare(nameA);
-  //           case "dateNew":
-  //             return dateB - dateA;
-  //           case "dateOld":
-  //             return dateA - dateB;
-  //           case "sizeBig":
-  //             return sizeB - sizeA;
-  //           case "sizeSmall":
-  //             return sizeA - sizeB;
-  //           default:
-  //             return 0;
-  //         }
-  //       });
-
-  //       // Re-append sorted files
-  //       files.forEach((file) => container.appendChild(file));
-  //     });
-  //   </script>
-  // </body>
