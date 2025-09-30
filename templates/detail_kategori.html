@@ -8,7 +8,7 @@
         <a href="{{ url_for('index') }}">Dashboard</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{ url_for('kategori') }}">Kategori</a>
+        <a href="{{ url_for('kategori') }}">Jenis Ijin</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">{{ kategori.nama }}</li>
     </ol>
@@ -50,7 +50,7 @@
     <!-- Form tambah jenis -->
     <form method="POST" action="{{ url_for('tambah_jenis') }}" class="d-flex gap-2">
       <input type="hidden" name="kategori_id" value="{{ kategori.id }}" />
-      <input type="text" name="nama" class="form-control" placeholder="Nama jenis" required />
+      <input type="text" name="nama" class="form-control" placeholder="Nama bentuk ijin" required />
       <button class="btn btn-success" type="submit">Tambah Bentuk ijin</button>
     </form>
   </div>
