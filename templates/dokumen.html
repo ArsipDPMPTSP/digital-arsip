@@ -53,6 +53,7 @@
           {% endif %}
         </td>
         <td>
+          <a href="{{ url_for('hapus_dokumen', id=d.id) }}" class="btn btn-sm btn-danger">🗑️</a>
           <a href="{{ url_for('edit_dokumen', id=d.id) }}" class="btn btn-sm btn-warning">✏️</a>
         </td>
       </tr>
@@ -75,8 +76,8 @@
         {% if d.file_url %}
         <a href="{{ d.file_url }}" target="_blank" class="btn btn-sm btn-primary">👁 Lihat</a>
         <a href="{{ d.file_url }}" download class="btn btn-sm btn-success">⬇️ Unduh</a>
-        <a href="{{ url_for('hapus_dokumen', id=d.id) }}" class="btn btn-sm btn-danger">🗑️ Hapus</a>
         {% endif %}
+        <a href="{{ url_for('hapus_dokumen', id=d.id) }}" class="btn btn-sm btn-danger">🗑️ Hapus</a>
         <a href="{{ url_for('edit_dokumen', id=d.id) }}" class="btn btn-sm btn-warning">✏️ Edit</a>
       </div>
     </div>
