@@ -202,5 +202,56 @@
         document.getElementById("sidebar").classList.toggle("active");
       });
     </script>
+
+    <!-- Search & Sort Script -->
+    <script>
+      document.getElementById("searchInput").addEventListener("input", function () {
+        const query = this.value.toLowerCase();
+        const files = document.querySelectorAll(".file-card");
+        files.forEach((file) => {
+          const name = file.getAttribute("data-name");
+          if (name.includes(query)) {
+            file.parentElement.style.display = "block";
+          } else {
+            file.parentElement.style.display = "none";
+          }
+        });
+      });
+
+      document.getElementById("sortSelect").addEventListener("change", function () {
+        const container = document.getElementById("fileContainer");
+        const files = Array.from(container.children);
+        const criteria = this.value;
+
+        files.sort((a, b) => {
+          const nameA = a.querySelector(".file-card").getAttribute("data-name");
+          const nameB = b.querySelector(".file-card").getAttribute("data-name");
+          const dateA = new Date(a.querySelector(".file-card").getAttribute("data-date"));
+          const dateB = new Date(b.querySelector(".file-card").getAttribute("data-date"));
+          const sizeA = parseInt(a.querySelector(".file-card").getAttribute("data-size"));
+          const sizeB = parseInt(b.querySelector(".file-card").getAttribute("data-size"));
+
+          switch (criteria) {
+            case "nameAsc":
+              return nameA.localeCompare(nameB);
+            case "nameDesc":
+              return nameB.localeCompare(nameA);
+            case "dateNew":
+              return dateB - dateA;
+            case "dateOld":
+              return dateA - dateB;
+            case "sizeBig":
+              return sizeB - sizeA;
+            case "sizeSmall":
+              return sizeA - sizeB;
+            default:
+              return 0;
+          }
+        });
+
+        // Re-append sorted files
+        files.forEach((file) => container.appendChild(file));
+      });
+    </script>
   </body>
 </html>
