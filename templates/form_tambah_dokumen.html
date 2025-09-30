@@ -21,7 +21,7 @@
   <div class="mb-2">
     <label for="kategori_id" class="form-label">Kategori</label>
     <select name="kategori_id" id="kategori_id" class="form-select" required>
-      <option value="">-- Pilih Kategori --</option>
+      <option value="">-- Pilih Jenis Ijin --</option>
       {% for k in kategori %}
       <option value="{{ k.id }}">{{ k.nama }}</option>
       {% endfor %}
@@ -31,7 +31,7 @@
   <div class="mb-2">
     <label for="jenis_id" class="form-label">Jenis</label>
     <select name="jenis_id" id="jenis_id" class="form-select">
-      <option value="">-- Pilih Jenis --</option>
+      <option value="">-- Pilih Bentuk Ijin --</option>
     </select>
   </div>
 
