@@ -1,17 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <h2 class="mb-4">📄 Manajemen Dokumen</h2>
 
 <!-- 🔍 Pencarian & Tambah -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
   <!-- Form pencarian -->
   <form method="GET" action="{{ url_for('dokumen') }}" class="d-flex w-100 w-md-auto" style="max-width: 400px">
-    <input 
-      type="text" 
-      name="search" 
-      value="{{ search or '' }}" 
-      placeholder="🔍 Cari dokumen..." 
-      class="form-control form-control-sm me-2" />
+    <input type="text" name="search" value="{{ search or '' }}" placeholder="🔍 Cari dokumen..." class="form-control form-control-sm me-2" />
     <button class="btn btn-sm btn-outline-secondary">Cari</button>
   </form>
 
@@ -20,7 +14,8 @@
 </div>
 
 <!-- 📄 Daftar Dokumen -->
-<div class="table-responsive">
+<div class="d-none d-md-block table-responsive">
+  <!-- Versi tabel untuk layar besar -->
   <table class="table table-bordered table-striped table-hover align-middle">
     <thead class="table-dark">
       <tr class="text-nowrap">
@@ -49,24 +44,41 @@
         <td>{{ d.kategori or "-" }}</td>
         <td>{{ d.jenis or "-" }}</td>
         <td>{{ d.tgl_upload.strftime('%d-%m-%Y %H:%M') if d.tgl_upload else "-" }}</td>
-        <td class="d-flex flex-wrap gap-1">
+        <td>
           {% if d.file_url %}
-          <a href="{{ d.file_url }}" target="_blank" class="btn btn-sm btn-primary">👁 Lihat</a>
-          <a href="{{ d.file_url }}" download class="btn btn-sm btn-success">⬇️ Unduh</a>
+          <a href="{{ d.file_url }}" target="_blank" class="btn btn-sm btn-primary">👁</a>
+          <a href="{{ d.file_url }}" download class="btn btn-sm btn-success">⬇️</a>
           {% else %}
-          <span class="text-muted">Tidak ada file</span>
+          <span class="text-muted">-</span>
           {% endif %}
         </td>
         <td>
-          <a href="{{ url_for('edit_dokumen', id=d.id) }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+          <a href="{{ url_for('edit_dokumen', id=d.id) }}" class="btn btn-sm btn-warning">✏️</a>
         </td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="11" class="text-center text-muted">Belum ada dokumen</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-{% endblock %}
+
+<!-- Versi mobile: card view -->
+<div class="d-md-none">
+  {% for d in dokumen %}
+  <div class="card mb-2 shadow-sm">
+    <div class="card-body p-2">
+      <h6 class="card-title mb-1">{{ d.nama_pemilik }} - {{ d.nama_perusahaan }}</h6>
+      <p class="mb-1"><strong>Nomor Surat:</strong> {{ d.nomor_surat }} ({{ d.tahun }})</p>
+      <p class="mb-1"><strong>Alamat:</strong> {{ d.alamat }}</p>
+      <p class="mb-1"><strong>Jenis:</strong> {{ d.kategori or "-" }} / {{ d.jenis or "-" }}</p>
+      <p class="mb-1"><strong>Tanggal:</strong> {{ d.tgl_upload.strftime('%d-%m-%Y %H:%M') if d.tgl_upload else "-" }}</p>
+      <div class="d-flex flex-wrap gap-1 mt-2">
+        {% if d.file_url %}
+        <a href="{{ d.file_url }}" target="_blank" class="btn btn-sm btn-primary">👁 Lihat</a>
+        <a href="{{ d.file_url }}" download class="btn btn-sm btn-success">⬇️ Unduh</a>
+        {% endif %}
+        <a href="{{ url_for('edit_dokumen', id=d.id) }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
