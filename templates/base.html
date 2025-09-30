@@ -69,8 +69,8 @@
         background: linear-gradient(180deg, #b7e6da, #25a8ff);
         min-height: 100vh;
         padding: 20px 10px;
+        transition: transform 0.3s ease-in-out;
       }
-
       .sidebar a {
         display: flex;
         align-items: center;
@@ -91,9 +91,7 @@
       .sidebar a.active {
         background-color: #2563eb;
         box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
-      }
-
-      /* Navbar */
+      } /* Navbar */
       .navbar .nav-link {
         font-weight: 500;
         color: #1e293b;
@@ -102,33 +100,42 @@
       .navbar .nav-link:hover {
         color: #2563eb;
         transform: translateY(-2px);
-      }
-
-      /* Footer */
+      } /* Footer */
       .footer {
         background: #f8f9fc;
         color: #000000;
         padding: 15px 0;
-        margin-top: 30px;
-        font-size: 11px;
-        /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
+        font-size: 12px;
       }
-      .footer-logo {
-        width: 24px;
-        height: 24px;
-        object-fit: cover;
-        margin-right: 6px;
-      }
-
-      /* Efek kartu */
-      .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .card:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      .footer img {
+        height: 15px;
+        margin: 0 6px;
+        border-radius: 3px;
+      } /* Mobile tweaks */
+      @media (max-width: 768px) {
+        #sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 220px;
+          z-index: 1050;
+          transform: translateX(-100%);
+        }
+        #sidebar.active {
+          transform: translateX(0);
+        }
+        #sidebar .text-center {
+          margin-top: 20px;
+        }
+        #page-content {
+          margin-left: 0 !important;
+        }
+        .footer {
+          text-align: center;
+          font-size: 11px;
+          line-height: 1.4;
+        }
       }
     </style>
   </head>
@@ -161,6 +168,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3">
           <div class="container-fluid">
+            <button class="btn btn-outline-primary d-lg-none me-2" id="menu-toggle"><i class="bi bi-list"></i></button>
             <a class="navbar-brand" href="#"> <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%" /> DPMPTSP Kota Kupang </a>
             <div class="collapse navbar-collapse">
               <ul class="navbar-nav ms-auto">
@@ -177,21 +185,76 @@
             </div>
           </div>
         </nav>
-
         <!-- Main Content -->
         <main class="container-fluid p-4 flex-grow-1">{% block content %}{% endblock %}</main>
-
         <!-- Footer -->
         <footer class="footer mt-auto">
-          <div class="container text-center d-flex justify-content-center align-items-center">
-            2025 ©
-            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 15px; vertical-align: middle; margin-right: 8px; margin-left: 8px; border-radius: 3px" />
-            Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Kupang
+          <div class="container text-center d-flex flex-wrap justify-content-center align-items-center">
+            2025 © <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" /> Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Kupang
           </div>
         </footer>
       </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Sidebar toggle document.getElementById("menu-toggle").addEventListener("click", function () { document.getElementById("sidebar").classList.toggle("active"); });
+    </script>
   </body>
 </html>
+    // </script>
+    // <script>
+  //     function closeLightbox() {
+  //       document.getElementById("lightboxModal").style.display = "none";
+  //     }
+
+  //     // Pencarian file
+  //     document.getElementById("searchInput").addEventListener("input", function () {
+  //       const query = this.value.toLowerCase();
+  //       const files = document.querySelectorAll(".file-card");
+  //       files.forEach((file) => {
+  //         const name = file.getAttribute("data-name");
+  //         if (name.includes(query)) {
+  //           file.parentElement.style.display = "block";
+  //         } else {
+  //           file.parentElement.style.display = "none";
+  //         }
+  //       });
+  //     });
+
+  //     // Sorting file
+  //     document.getElementById("sortSelect").addEventListener("change", function () {
+  //       const criteria = this.value;
+  //       const container = document.getElementById("fileContainer");
+  //       const files = Array.from(container.children);
+
+  //       files.sort((a, b) => {
+  //         const nameA = a.querySelector(".file-card").getAttribute("data-name");
+  //         const nameB = b.querySelector(".file-card").getAttribute("data-name");
+  //         const dateA = new Date(a.querySelector(".file-card").getAttribute("data-date"));
+  //         const dateB = new Date(b.querySelector(".file-card").getAttribute("data-date"));
+  //         const sizeA = parseInt(a.querySelector(".file-card").getAttribute("data-size"));
+  //         const sizeB = parseInt(b.querySelector(".file-card").getAttribute("data-size"));
+
+  //         switch (criteria) {
+  //           case "nameAsc":
+  //             return nameA.localeCompare(nameB);
+  //           case "nameDesc":
+  //             return nameB.localeCompare(nameA);
+  //           case "dateNew":
+  //             return dateB - dateA;
+  //           case "dateOld":
+  //             return dateA - dateB;
+  //           case "sizeBig":
+  //             return sizeB - sizeA;
+  //           case "sizeSmall":
+  //             return sizeA - sizeB;
+  //           default:
+  //             return 0;
+  //         }
+  //       });
+
+  //       // Re-append sorted files
+  //       files.forEach((file) => container.appendChild(file));
+  //     });
+  //   </script>
+  // </body>
