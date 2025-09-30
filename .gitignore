@@ -21,3 +21,5 @@ uploads/
 # Credentials / secret files
 credentials.json
 token.json
+
+make_hash.py
