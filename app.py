@@ -12,6 +12,7 @@ from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
+from authlib.integrations.flask_client import OAuth
 
 
 # ---------- CONFIG ----------
@@ -19,6 +20,19 @@ APP_SECRET = os.getenv("APP_SECRET", "rahasia123")  # ganti dengan secret yang a
 CLIENT_SECRET_FILE = "credentials.json"     # file yang di-download dari Google Cloud
 SCOPES = ["https://www.googleapis.com/auth/drive.file"]  # cukup untuk upload & lihat file
 TOKEN_FILE = "token.json"
+
+
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+    access_token_url='https://oauth2.googleapis.com/token',
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    api_base_url='https://www.googleapis.com/oauth2/v2/',
+    client_kwargs={'scope': 'openid email profile'},
+)
+
 
 app = Flask(__name__)
 app.secret_key = APP_SECRET
@@ -165,6 +179,43 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
+
+@app.route("/login/google")
+def login_google():
+    redirect_uri = url_for("login_google_callback", _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@app.route("/login/google/callback")
+def login_google_callback():
+    token = google.authorize_access_token()
+    resp = google.get("userinfo")
+    user_info = resp.json()
+
+    email = user_info["email"]
+    name = user_info.get("name")
+
+    # cek apakah email sudah ada di database admin
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM admin WHERE username=%s", (email,))
+    akun = cursor.fetchone()
+
+    if not akun:
+        # kalau belum ada, buat akun otomatis
+        cursor.execute("INSERT INTO admin (username, password) VALUES (%s, %s)",
+                       (email, generate_password_hash("google_oauth")))
+        conn.commit()
+        cursor.execute("SELECT * FROM admin WHERE username=%s", (email,))
+        akun = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    # simpan ke session
+    session["user_id"] = akun["id"]
+    session["username"] = akun["username"]
+    flash("✅ Login dengan Google berhasil!", "success")
+    return redirect(url_for("index"))
 
 @app.route("/logout")
 def logout():
