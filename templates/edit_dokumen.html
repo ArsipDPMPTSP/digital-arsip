@@ -25,9 +25,9 @@
 
   <!-- Dropdown Kategori -->
   <div class="mb-2">
-    <label for="kategori" class="form-label">Kategori</label>
+    <label for="kategori" class="form-label">Jenis Ijin</label>
     <select name="kategori_id" id="kategori" class="form-control" required>
-      <option value="">-- Pilih Kategori --</option>
+      <option value="">-- Pilih Jenis Ijin --</option>
       {% for k in kategori %}
       <option value="{{ k.id }}" {% if dokumen.kategori_id == k.id %}selected{% endif %}>{{ k.nama }}</option>
       {% endfor %}
@@ -36,9 +36,9 @@
 
   <!-- Dropdown Jenis -->
   <div class="mb-2">
-    <label for="jenis" class="form-label">Jenis</label>
+    <label for="jenis" class="form-label">Bentuk Ijin</label>
     <select name="jenis_id" id="jenis" class="form-control">
-      <option value="">-- Pilih Jenis --</option>
+      <option value="">-- Pilih Bentuk Ijin --</option>
       {% for j in jenis %}
       <option value="{{ j.id }}" {% if dokumen.jenis_id == j.id %}selected{% endif %}>{{ j.nama }}</option>
       {% endfor %}
