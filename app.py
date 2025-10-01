@@ -12,7 +12,6 @@ from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
-from authlib.integrations.flask_client import OAuth
 
 
 # ---------- CONFIG ----------
@@ -23,6 +22,7 @@ TOKEN_FILE = "token.json"
 
 app = Flask(__name__)
 app.secret_key = os.getenv("APP_SECRET", "rahasia123")  # secret key aman
+
 
 # Folder sementara
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
@@ -166,43 +166,6 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
-
-@app.route("/login/google")
-def login_google():
-    redirect_uri = url_for("login_google_callback", _external=True)
-    return google.authorize_redirect(redirect_uri)
-
-@app.route("/login/google/callback")
-def login_google_callback():
-    token = google.authorize_access_token()
-    resp = google.get("userinfo")
-    user_info = resp.json()
-
-    email = user_info["email"]
-    name = user_info.get("name")
-
-    # cek apakah email sudah ada di database admin
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM admin WHERE username=%s", (email,))
-    akun = cursor.fetchone()
-
-    if not akun:
-        # kalau belum ada, buat akun otomatis
-        cursor.execute("INSERT INTO admin (username, password) VALUES (%s, %s)",
-                       (email, generate_password_hash("google_oauth")))
-        conn.commit()
-        cursor.execute("SELECT * FROM admin WHERE username=%s", (email,))
-        akun = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-
-    # simpan ke session
-    session["user_id"] = akun["id"]
-    session["username"] = akun["username"]
-    flash("✅ Login dengan Google berhasil!", "success")
-    return redirect(url_for("index"))
 
 @app.route("/logout")
 def logout():
