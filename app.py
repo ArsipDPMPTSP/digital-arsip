@@ -13,20 +13,18 @@ from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
-
 # ---------- CONFIG ----------
-APP_SECRET = os.getenv("APP_SECRET", "rahasia123")  # ganti dengan secret yang aman
-CLIENT_SECRET_FILE = "credentials.json"     # file yang di-download dari Google Cloud
-SCOPES = ["https://www.googleapis.com/auth/drive.file"]  # cukup untuk upload & lihat file
+APP_SECRET = os.getenv("APP_SECRET", "rahasia123")
+SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 TOKEN_FILE = "token.json"
 
 app = Flask(__name__)
-app.secret_key = os.getenv("APP_SECRET", "rahasia123")  # secret key aman
-
+app.secret_key = APP_SECRET
 
 # Folder sementara
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
 
 # ===================== DATABASE =====================
 def get_db_connection():
@@ -37,24 +35,24 @@ def get_db_connection():
         database=os.getenv("MYSQLDATABASE"),
         port=int(os.getenv("MYSQLPORT"))
     )
-    
+
+
 # ---------------- OAuth helpers ----------------
-creds_json = os.getenv("GOOGLE_CREDENTIALS_JSON", None)
-if creds_json:
+def save_credentials_to_file(creds: Credentials):
     """Simpan token ke token.json"""
     with open(TOKEN_FILE, "w") as f:
-        f.write(creds_json())
-        
-def save_credentials_to_file(creds: Credentials):
-    with open(CLIENT_SECRET_FILE, "w") as f:
         f.write(creds.to_json())
 
+
 def load_credentials_from_file():
+    """Ambil token dari token.json"""
     if not os.path.exists(TOKEN_FILE):
         return None
     return Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
 
+
 def save_credentials_to_session(creds: Credentials):
+    """Simpan token ke session"""
     session["credentials"] = {
         "token": creds.token,
         "refresh_token": creds.refresh_token,
@@ -64,8 +62,9 @@ def save_credentials_to_session(creds: Credentials):
         "scopes": creds.scopes
     }
 
+
 def get_drive_service():
-    # Prioritas: session -> token.json
+    """Buat service Drive"""
     creds = None
     if "credentials" in session:
         creds = Credentials.from_authorized_user_info(session["credentials"], SCOPES)
@@ -75,53 +74,78 @@ def get_drive_service():
     if not creds:
         return None
 
-    # Refresh jika perlu
+    # Refresh token kalau expired
     if creds.expired and creds.refresh_token:
         try:
             creds.refresh(Request())
-            # update penyimpanan
             save_credentials_to_file(creds)
             save_credentials_to_session(creds)
         except Exception as e:
-            print("Gagal refresh token:", e)
+            print("⚠️ Gagal refresh token:", e)
             return None
 
     return build("drive", "v3", credentials=creds)
 
+
 # ---------------- Routes untuk OAuth ----------------
 @app.route("/authorize")
 def authorize():
-    # Flow yang akan redirect ke Google
-    flow = Flow.from_client_secrets_file(
-        CLIENT_SECRET_FILE,
+    """Mulai OAuth Flow"""
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
+    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
+
+    flow = Flow.from_client_config(
+        {
+            "web": {
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+            }
+        },
         scopes=SCOPES,
-        redirect_uri=url_for("oauth2callback", _external=True)
+        redirect_uri=redirect_uri,
     )
+
     auth_url, state = flow.authorization_url(
         access_type="offline",
         include_granted_scopes="true",
-        prompt="consent"   # pastikan dapat refresh_token pada pertama kali
+        prompt="consent"
     )
     session["state"] = state
     return redirect(auth_url)
 
+
 @app.route("/oauth2callback")
 def oauth2callback():
-    state = session.get("state", None)
-    flow = Flow.from_client_secrets_file(
-        CLIENT_SECRET_FILE,
+    """Handle callback dari Google"""
+    state = session.get("state")
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
+    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
+
+    flow = Flow.from_client_config(
+        {
+            "web": {
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+            }
+        },
         scopes=SCOPES,
         state=state,
-        redirect_uri=url_for("oauth2callback", _external=True)
+        redirect_uri=redirect_uri,
     )
+
     flow.fetch_token(authorization_response=request.url)
 
     creds = flow.credentials
-    # Simpan token ke file dan session
     save_credentials_to_file(creds)
     save_credentials_to_session(creds)
 
-    flash("Google Drive berhasil diotorisasi. Kamu bisa upload sekarang.", "success")
+    flash("✅ Google Drive berhasil diotorisasi. Kamu bisa upload sekarang.", "success")
     return redirect(url_for("index"))
 
 # ---------------- Upload helper ----------------
