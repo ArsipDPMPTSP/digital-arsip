@@ -24,17 +24,6 @@ TOKEN_FILE = "token.json"
 app = Flask(__name__)
 app.secret_key = os.getenv("APP_SECRET", "rahasia123")  # secret key aman
 
-oauth = OAuth(app)
-google = oauth.register(
-    name="google",
-    client_id=os.getenv("GOOGLE_CLIENT_ID"),
-    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
-    access_token_url="https://oauth2.googleapis.com/token",
-    authorize_url="https://accounts.google.com/o/oauth2/auth",
-    api_base_url="https://www.googleapis.com/oauth2/v2/",
-    client_kwargs={"scope": "openid email profile"},
-)
-
 # Folder sementara
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
