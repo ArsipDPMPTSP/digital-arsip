@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Dashboard Arsip - Header Wave</title>
+    <title>Dashboard Arsip - Multi-layer Wave</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap & Font Awesome -->
@@ -22,6 +22,17 @@
         transition: all 0.5s ease;
       }
 
+      body.light {
+        background: linear-gradient(270deg, #0e6cc4, #3498db, #00ffff, #ff00ff);
+        background-size: 1500% 1500%;
+        animation: neonBG 25s ease infinite;
+      }
+
+      body.dark {
+        background: #0b1a2b;
+        color: #fff;
+      }
+
       @keyframes neonBG {
         0% {
           background-position: 0% 50%;
@@ -32,18 +43,6 @@
         100% {
           background-position: 0% 50%;
         }
-      }
-
-      body.light {
-        background: linear-gradient(270deg, #0e6cc4, #3498db, #0e6cc4, #00ffff, #ff00ff);
-        background-size: 1500% 1500%;
-        animation: neonBG 25s ease infinite;
-        color: #fff;
-      }
-
-      body.dark {
-        background: #0b1a2b;
-        color: #fff;
       }
 
       /* Navbar */
@@ -61,17 +60,11 @@
         color: #00ffff;
       }
 
-      /* Dark mode switch */
-      .form-check-input:checked {
-        background-color: #00ffff;
-        border-color: #00ffff;
-      }
-
-      /* Header Wave */
+      /* Header */
       header {
         position: relative;
         text-align: center;
-        padding: 100px 20px 60px;
+        padding: 120px 20px 80px;
         overflow: hidden;
       }
 
@@ -100,30 +93,14 @@
         position: relative;
       }
 
-      /* Wave effect */
-      header::before {
-        content: "";
+      /* Canvas Wave Multi-layer */
+      #waveCanvas {
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 200%;
-        height: 120px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 45%;
-        animation: wave 6s infinite linear;
+        width: 100%;
+        height: 160px;
         z-index: 1;
-      }
-
-      @keyframes wave {
-        0% {
-          transform: translateX(0);
-        }
-        50% {
-          transform: translateX(-25%);
-        }
-        100% {
-          transform: translateX(0);
-        }
       }
 
       /* Dashboard Cards */
@@ -263,6 +240,7 @@
       <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Besar" />
       <h1>Arsip Digital</h1>
       <p>Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</p>
+      <canvas id="waveCanvas"></canvas>
     </header>
 
     <!-- Dashboard Cards -->
@@ -294,9 +272,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // Tooltip
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       const tooltipList = [...tooltipTriggerList].map((el) => new bootstrap.Tooltip(el));
 
+      // Dark mode
       const switchEl = document.getElementById("darkModeSwitch");
       function autoDarkMode() {
         const h = new Date().getHours();
@@ -331,6 +311,7 @@
         }
       });
 
+      // Ripple & fade out
       document.querySelectorAll(".card-dashboard").forEach((card) => {
         card.addEventListener("click", function (e) {
           e.preventDefault();
@@ -350,6 +331,48 @@
           setTimeout(() => ripple.remove(), 600);
         });
       });
+
+      // Wave Canvas Multi-layer
+      const canvas = document.getElementById("waveCanvas");
+      const ctx = canvas.getContext("2d");
+      let width, height;
+      function resizeCanvas() {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      let mouseX = 0;
+      window.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX / width;
+      });
+
+      // 3 layer wave
+      const layers = [
+        { amplitude: 15, wavelength: 0.02, speed: 0.002, color: "rgba(255,255,255,0.05)" },
+        { amplitude: 20, wavelength: 0.015, speed: 0.0015, color: "rgba(255,255,255,0.08)" },
+        { amplitude: 25, wavelength: 0.01, speed: 0.001, color: "rgba(255,255,255,0.12)" },
+      ];
+
+      function drawWave() {
+        ctx.clearRect(0, 0, width, height);
+        const time = Date.now();
+        layers.forEach((layer) => {
+          ctx.beginPath();
+          ctx.moveTo(0, height);
+          for (let x = 0; x < width; x++) {
+            const y = layer.amplitude * Math.sin(x * layer.wavelength + time * layer.speed) + height / 2 + 5 * Math.sin(mouseX * Math.PI * 2);
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(width, height);
+          ctx.closePath();
+          ctx.fillStyle = layer.color;
+          ctx.fill();
+        });
+        requestAnimationFrame(drawWave);
+      }
+      drawWave();
     </script>
   </body>
 </html>
