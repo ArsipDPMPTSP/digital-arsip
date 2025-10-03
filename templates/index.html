@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <title>Dashboard Arsip</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="{{ url_for('static', filename='img/Logo.ico') }}" type="image/x-icon" />
 
     <!-- Bootstrap, Font Awesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -20,6 +19,7 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        text-align: center;
       }
 
       /* Navbar */
@@ -38,54 +38,55 @@
       /* Header */
       header {
         text-align: center;
-        padding: 100px 20px 40px;
+        padding: 120px 20px 40px; /* beri ruang untuk navbar fixed */
       }
       header img {
-        height: 100px;
-        max-width: 100%;
+        max-width: 200px; /* fleksibel, tidak terpotong */
+        width: 50%;
+        height: auto;
         margin-bottom: 15px;
       }
       header h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-bottom: 10px;
       }
       header p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         opacity: 0.9;
       }
 
       /* Dashboard cards */
       .dashboard {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
         max-width: 1100px;
         margin: auto;
-        padding: 20px;
+        padding: 15px;
       }
       .card-dashboard {
         background: #444;
         border-radius: 12px;
-        padding: 30px 20px;
+        padding: 20px 15px;
         text-decoration: none;
         color: #fff;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
       .card-dashboard:hover {
         transform: scale(1.05);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
       }
       .card-dashboard i {
-        font-size: 2.5rem;
-        margin-bottom: 12px;
+        font-size: 2rem;
+        margin-bottom: 10px;
       }
       .card-dashboard div {
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 0.95rem;
         text-align: center;
       }
 
@@ -122,25 +123,21 @@
 
       /* Responsive */
       @media (max-width: 576px) {
+        header img {
+          max-width: 120px;
+          width: 60%;
+        }
         header h1 {
-          font-size: 1.8rem;
+          font-size: 1.5rem;
         }
         header p {
-          font-size: 0.95rem;
+          font-size: 0.85rem;
         }
         .card-dashboard i {
-          font-size: 2rem;
+          font-size: 1.5rem;
         }
         .card-dashboard div {
-          font-size: 0.9rem;
-        }
-      }
-      @media (max-width: 768px) {
-        header img {
-          height: 80px;
-        }
-        .card-dashboard {
-          padding: 25px 15px;
+          font-size: 0.85rem;
         }
       }
     </style>
@@ -149,7 +146,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="https://dpmptsp.kupangkota.go.id/#" data-bs-toggle="tooltip" title="Beranda">
+        <a class="navbar-brand" href="#" data-bs-toggle="tooltip" title="Beranda">
           <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
