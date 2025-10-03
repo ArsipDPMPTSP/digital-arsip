@@ -28,59 +28,15 @@
         font-weight: 500;
       }
 
-      /* Sidebar gradien */
+      /* Sidebar formal */
       .sidebar {
-        background: linear-gradient(180deg, #a1e2dd, #008cff);
+        background: linear-gradient(180deg, #1e3a8a, #3b82f6); /* biru gelap ke biru sedang */
         color: #fff;
-        min-height: 100vh;
-      }
-
-      .sidebar a {
-        color: #fff;
-        text-decoration: none;
-        display: block;
-        padding: 10px 15px;
-        border-radius: 10px;
-        transition: background 0.2s;
-      }
-
-      .sidebar a:hover,
-      .sidebar .active {
-        background: rgba(255, 255, 255, 0.15);
-      }
-
-      /* Card */
-      .card {
-        border: none;
-        border-radius: 1rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .card h5,
-      .card p {
-        margin: 0;
-      }
-
-      /* Dashboard icons */
-      .dashboard-icon {
-        font-size: 2rem;
-        color: #4e73df;
-        margin-bottom: 10px;
-      }
-
-      /* Navbar atas */
-      .navbar {
-        background: #fff;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Sidebar */
-      .sidebar {
-        background: linear-gradient(180deg, #b7e6da, #25a8ff);
         min-height: 100vh;
         padding: 20px 10px;
         transition: transform 0.3s ease-in-out;
       }
+
       .sidebar a {
         display: flex;
         align-items: center;
@@ -93,41 +49,51 @@
         margin-bottom: 8px;
         transition: all 0.3s ease;
       }
+
       .sidebar a:hover {
-        background-color: #3b82f6;
-        transform: translateX(6px) scale(1.05);
-        box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
-      }
-      .sidebar a.active {
-        background-color: #2563eb;
-        box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
+        background-color: #2563eb; /* biru medium */
+        transform: translateX(4px) scale(1.03);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
       }
 
-      /* Navbar */
+      .sidebar a.active {
+        background-color: #1e40af; /* biru gelap tegas */
+        box-shadow: 0 0 12px rgba(30, 64, 175, 0.6);
+      }
+
+      /* Navbar formal */
+      .navbar {
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
       .navbar .nav-link {
         font-weight: 500;
-        color: #1e293b;
+        color: #1e293b; /* abu gelap */
         transition: all 0.3s ease;
       }
+
       .navbar .nav-link:hover {
-        color: #2563eb;
+        color: #1d4ed8; /* biru gelap */
         transform: translateY(-2px);
+      }
+
+      /* Card tetap profesional */
+      .card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       }
 
       /* Footer */
       .footer {
-        background: #f8f9fc;
-        color: #000000;
+        background: #f1f3f5; /* abu lembut */
+        color: #333;
         padding: 15px 0;
         font-size: 12px;
       }
-      .footer img {
-        height: 15px;
-        margin: 0 6px;
-        border-radius: 3px;
-      }
 
-      /* Mobile tweaks */
+      /* Mobile tweaks tetap */
       @media (max-width: 768px) {
         #sidebar {
           position: fixed;

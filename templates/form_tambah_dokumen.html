@@ -47,7 +47,7 @@
   document.getElementById("kategori_id").addEventListener("change", function () {
     const kategoriId = this.value;
     const jenisSelect = document.getElementById("jenis_id");
-    jenisSelect.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+    jenisSelect.innerHTML = '<option value="">-- Pilih Bentuk Ijin --</option>';
 
     if (kategoriId) {
       fetch(`/get_jenis/${kategoriId}`)
