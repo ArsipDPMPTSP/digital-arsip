@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Dashboard Arsip - Neon Dark Mode Toggle</title>
+    <title>Dashboard Arsip - Dark Mode Gabungan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap & Font Awesome -->
@@ -22,6 +22,7 @@
         transition: all 0.5s ease;
       }
 
+      /* Background animation */
       @keyframes neonBG {
         0% {
           background-position: 0% 50%;
@@ -173,7 +174,6 @@
         border-radius: 3px;
       }
 
-      /* Responsive */
       @media (max-width: 576px) {
         header img {
           max-width: 120px;
@@ -264,18 +264,34 @@
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       const tooltipList = [...tooltipTriggerList].map((el) => new bootstrap.Tooltip(el));
 
-      // Dark mode toggle manual
       const switchEl = document.getElementById("darkModeSwitch");
 
-      // Load preference
-      if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark");
-        switchEl.checked = true;
-      } else {
-        document.body.classList.add("light");
+      // Fungsi dark mode otomatis (jika user belum pilih manual)
+      function autoDarkMode() {
+        const hour = new Date().getHours();
+        return hour >= 18 || hour < 6;
       }
 
-      // Toggle event
+      // Load preference
+      const userPref = localStorage.getItem("darkMode");
+      if (userPref === "true") {
+        document.body.classList.add("dark");
+        switchEl.checked = true;
+      } else if (userPref === "false") {
+        document.body.classList.add("light");
+        switchEl.checked = false;
+      } else {
+        // belum ada preferensi user -> pakai auto mode
+        if (autoDarkMode()) {
+          document.body.classList.add("dark");
+          switchEl.checked = true;
+        } else {
+          document.body.classList.add("light");
+          switchEl.checked = false;
+        }
+      }
+
+      // Toggle manual
       switchEl.addEventListener("change", () => {
         if (switchEl.checked) {
           document.body.classList.add("dark");
@@ -288,7 +304,7 @@
         }
       });
 
-      // Fade out redirect & ripple effect
+      // Fade out & ripple
       document.querySelectorAll(".card-dashboard").forEach((card) => {
         card.addEventListener("click", function (e) {
           e.preventDefault();
