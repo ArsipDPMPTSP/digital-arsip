@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Dashboard Arsip - Neon Interactive</title>
+    <title>Dashboard Arsip</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap & Font Awesome -->
@@ -85,6 +85,7 @@
       }
 
       .card-dashboard {
+        position: relative;
         border-radius: 20px;
         padding: 25px 15px;
         text-decoration: none;
@@ -93,7 +94,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        position: relative;
         overflow: hidden;
         transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
         background: linear-gradient(135deg, #222, #111);
@@ -112,7 +112,7 @@
         text-align: center;
       }
 
-      /* Hover Neon */
+      /* Neon Hover Glow */
       .card-dashboard:hover {
         transform: scale(1.12);
         box-shadow: 0 0 25px #00ffff, 0 0 35px #ff00ff, 0 0 45px #00ffff;
@@ -123,6 +123,23 @@
         color: #ff00ff;
         transform: rotate(20deg) scale(1.4);
         text-shadow: 0 0 6px #00ffff, 0 0 12px #ff00ff;
+      }
+
+      /* Ripple Effect */
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(0);
+        animation: rippleAnim 0.6s linear;
+        pointer-events: none;
+      }
+
+      @keyframes rippleAnim {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
       }
 
       /* Footer */
@@ -197,19 +214,19 @@
 
     <!-- Dashboard Cards -->
     <div class="dashboard">
-      <a href="{{ url_for('dokumen') }}" class="card-dashboard red" data-target="{{ url_for('dokumen') }}">
+      <a href="{{ url_for('dokumen') }}" class="card-dashboard" data-target="{{ url_for('dokumen') }}">
         <i class="fa-solid fa-folder-open"></i>
         <div>Kelola Dokumen</div>
       </a>
-      <a href="{{ url_for('kategori') }}" class="card-dashboard green" data-target="{{ url_for('kategori') }}">
+      <a href="{{ url_for('kategori') }}" class="card-dashboard" data-target="{{ url_for('kategori') }}">
         <i class="fa-solid fa-layer-group"></i>
         <div>Jenis Ijin</div>
       </a>
-      <a href="{{ url_for('file_manager') }}" class="card-dashboard orange" data-target="{{ url_for('file_manager') }}">
+      <a href="{{ url_for('file_manager') }}" class="card-dashboard" data-target="{{ url_for('file_manager') }}">
         <i class="fa-solid fa-folder-tree"></i>
         <div>File Manager</div>
       </a>
-      <a href="{{ url_for('tentang') }}" class="card-dashboard blue" data-target="{{ url_for('tentang') }}">
+      <a href="{{ url_for('tentang') }}" class="card-dashboard" data-target="{{ url_for('tentang') }}">
         <i class="fa-solid fa-circle-info"></i>
         <div>Tentang</div>
       </a>
@@ -227,7 +244,7 @@
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       const tooltipList = [...tooltipTriggerList].map((el) => new bootstrap.Tooltip(el));
 
-      // Animasi transisi saat klik kartu
+      // Fade out redirect
       document.querySelectorAll(".card-dashboard").forEach((card) => {
         card.addEventListener("click", function (e) {
           e.preventDefault();
@@ -236,6 +253,17 @@
           setTimeout(() => {
             window.location.href = targetUrl;
           }, 400);
+        });
+
+        // Ripple effect
+        card.addEventListener("mousemove", function (e) {
+          const ripple = document.createElement("span");
+          ripple.className = "ripple";
+          ripple.style.left = e.offsetX - 50 + "px";
+          ripple.style.top = e.offsetY - 50 + "px";
+          ripple.style.width = ripple.style.height = "100px";
+          this.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
         });
       });
     </script>
