@@ -22,10 +22,6 @@
         min-height: 100vh;
       }
 
-      main {
-        flex: 1;
-      }
-
       header {
         padding: 40px 20px 20px;
         margin-top: 90px; /* beri jarak karena navbar fixed */
@@ -83,21 +79,11 @@
         font-weight: 600;
       }
 
-      .red {
-        background: #e74c3c;
-      }
-      .green {
-        background: #2ecc71;
-      }
-      .blue {
-        background: #3498db;
-      }
-      .orange {
-        background: #f39c12;
-      }
-      .gray {
-        background: #7f8c8d;
-      }
+      .red { background: #e74c3c; }
+      .green { background: #2ecc71; }
+      .blue { background: #3498db; }
+      .orange { background: #f39c12; }
+      .gray { background: #7f8c8d; }
 
       footer {
         background: #0e6cc4;
@@ -108,35 +94,22 @@
         margin-top: auto;
       }
 
-      footer img {
-        vertical-align: middle;
-      }
+      footer img { vertical-align: middle; }
 
-      /* Ubah warna navbar jadi sama dengan body */
-      .navbar-custom {
-        background-color: #0e6cc4;
-      }
-
+      .navbar-custom { background-color: #0e6cc4; }
       .navbar-custom .nav-link,
-      .navbar-custom .navbar-brand {
-        color: #fff;
-      }
-
+      .navbar-custom .navbar-brand { color: #fff; }
       .navbar-custom .nav-link:hover,
-      .navbar-custom .navbar-brand:hover {
-        color: #f1f1f1;
-      }
+      .navbar-custom .navbar-brand:hover { color: #f1f1f1; }
     </style>
   </head>
   <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container-fluid">
-        <!-- Logo kecil sebagai brand + tooltip -->
         <a class="navbar-brand" href="https://dpmptsp.kupangkota.go.id/#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Beranda">
           <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo" style="height: 80px; border-radius: 5px" />
         </a>
-
         <div class="d-flex align-items-center ms-auto">
           <div class="dropdown me-3">
             <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 👤 Admin </a>
@@ -150,50 +123,45 @@
       </div>
     </nav>
 
-    <main>
-      <!-- Header -->
+    <!-- Konten Utama & Tiles -->
+    <div>
       <header>
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Besar" />
         <h1>Arsip Digital</h1>
         <p>Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</p>
       </header>
 
-      <!-- Dashboard Tiles -->
       <section class="tiles">
         <a href="{{ url_for('dokumen') }}" class="tile red">
           <i class="fa-solid fa-folder-open"></i>
           <div>Kelola Dokumen</div>
         </a>
-
         <a href="{{ url_for('kategori') }}" class="tile green">
           <i class="fa-solid fa-layer-group"></i>
           <div>Jenis Ijin</div>
         </a>
-
         <a href="{{ url_for('file_manager') }}" class="tile orange">
           <i class="fa-solid fa-folder-tree"></i>
           <div>File Manager</div>
         </a>
-
         <a href="{{ url_for('tentang') }}" class="tile blue">
           <i class="fa-solid fa-circle-info"></i>
           <div>Tentang</div>
         </a>
       </section>
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer>
       2025 ©
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 20px; vertical-align: middle; margin-right: 8px; margin-left: 8px; border-radius: 3px" />
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 20px; vertical-align: middle; margin: 0 8px; border-radius: 3px" />
       DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU KOTA KUPANG
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Aktifkan tooltip Bootstrap
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+      const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
     </script>
   </body>
 </html>
