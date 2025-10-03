@@ -41,7 +41,7 @@
         padding: 120px 20px 40px; /* beri ruang untuk navbar fixed */
       }
       header img {
-        max-width: 200px; /* fleksibel, tidak terpotong */
+        max-width: 200px;
         width: 50%;
         height: auto;
         margin-bottom: 15px;
@@ -55,55 +55,67 @@
         opacity: 0.9;
       }
 
-      /* Dashboard cards */
+      /* Dashboard Cards */
       .dashboard {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 15px;
+        gap: 20px;
         max-width: 1100px;
         margin: auto;
         padding: 15px;
       }
+
       .card-dashboard {
-        background: #444;
-        border-radius: 12px;
-        padding: 20px 15px;
+        border-radius: 15px;
+        padding: 25px 15px;
         text-decoration: none;
         color: #fff;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: linear-gradient(135deg, #555, #333);
       }
-      .card-dashboard:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
-      }
+
       .card-dashboard i {
         font-size: 2rem;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
+        transition: transform 0.4s ease, color 0.4s ease;
       }
+
       .card-dashboard div {
         font-weight: 600;
         font-size: 0.95rem;
         text-align: center;
       }
 
+      /* Hover Effects */
+      .card-dashboard:hover {
+        transform: scale(1.08);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .card-dashboard:hover i {
+        transform: rotate(15deg) scale(1.2);
+        color: #ffeb3b;
+      }
+
+      /* Gradient per warna */
       .red {
-        background: #e74c3c;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
       }
       .green {
-        background: #2ecc71;
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
       }
       .blue {
-        background: #3498db;
+        background: linear-gradient(135deg, #3498db, #2980b9);
       }
       .orange {
-        background: #f39c12;
+        background: linear-gradient(135deg, #f39c12, #d35400);
       }
       .gray {
-        background: #7f8c8d;
+        background: linear-gradient(135deg, #7f8c8d, #95a5a6);
       }
 
       /* Footer */
