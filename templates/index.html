@@ -17,69 +17,76 @@
         margin: 0;
         background: #0e6cc4;
         color: #fff;
-        text-align: center;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
       }
 
-      header {
-        padding: 40px 20px 20px;
-        margin-top: 90px;
+      /* Navbar */
+      .navbar-custom {
+        background-color: #0e6cc4;
+      }
+      .navbar-custom .nav-link,
+      .navbar-custom .navbar-brand {
+        color: #fff;
+      }
+      .navbar-custom .nav-link:hover,
+      .navbar-custom .navbar-brand:hover {
+        color: #f1f1f1;
       }
 
+      /* Header */
+      header {
+        text-align: center;
+        padding: 100px 20px 40px;
+      }
       header img {
         height: 100px;
-        margin-bottom: 15px;
         max-width: 100%;
+        margin-bottom: 15px;
       }
-
       header h1 {
-        font-size: 2rem;
-        margin: 10px 0 5px;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
       }
-
       header p {
-        font-size: 1rem;
+        font-size: 1.1rem;
         opacity: 0.9;
       }
 
-      .tiles {
+      /* Dashboard cards */
+      .dashboard {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 20px;
-        padding: 20px;
         max-width: 1100px;
         margin: auto;
+        padding: 20px;
       }
-
-      .tile {
+      .card-dashboard {
+        background: #444;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-decoration: none;
+        color: #fff;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: #444;
-        border-radius: 15px;
-        text-decoration: none;
-        color: #fff;
-        padding: 25px 15px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
-
-      .tile:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      .card-dashboard:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
       }
-
-      .tile i {
+      .card-dashboard i {
         font-size: 2.5rem;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
-
-      .tile div {
-        font-size: 1rem;
+      .card-dashboard div {
         font-weight: 600;
-        word-wrap: break-word;
+        font-size: 1rem;
+        text-align: center;
       }
 
       .red {
@@ -98,6 +105,7 @@
         background: #7f8c8d;
       }
 
+      /* Footer */
       footer {
         background: #0e6cc4;
         color: #fff;
@@ -106,55 +114,33 @@
         font-size: 0.9rem;
         margin-top: auto;
       }
-
       footer img {
         vertical-align: middle;
         height: 20px;
         border-radius: 3px;
       }
 
-      /* Navbar */
-      .navbar-custom {
-        background-color: #0e6cc4;
-      }
-      .navbar-custom .nav-link,
-      .navbar-custom .navbar-brand {
-        color: #fff;
-      }
-      .navbar-custom .nav-link:hover,
-      .navbar-custom .navbar-brand:hover {
-        color: #f1f1f1;
-      }
-
-      /* Responsif */
+      /* Responsive */
       @media (max-width: 576px) {
         header h1 {
-          font-size: 1.5rem;
+          font-size: 1.8rem;
         }
         header p {
-          font-size: 0.9rem;
+          font-size: 0.95rem;
         }
-        .tile i {
+        .card-dashboard i {
           font-size: 2rem;
         }
-        .tile div {
+        .card-dashboard div {
           font-size: 0.9rem;
         }
-        .tiles {
-          padding: 15px;
-          gap: 15px;
-        }
-        nav .navbar-brand img {
-          height: 60px;
-        }
       }
-
       @media (max-width: 768px) {
         header img {
           height: 80px;
         }
-        .tile {
-          padding: 20px 10px;
+        .card-dashboard {
+          padding: 25px 15px;
         }
       }
     </style>
@@ -163,7 +149,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="https://dpmptsp.kupangkota.go.id/#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Beranda">
+        <a class="navbar-brand" href="https://dpmptsp.kupangkota.go.id/#" data-bs-toggle="tooltip" title="Beranda">
           <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -184,32 +170,31 @@
       </div>
     </nav>
 
-    <!-- Konten Utama & Tiles -->
-    <div>
-      <header>
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Besar" />
-        <h1>Arsip Digital</h1>
-        <p>Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</p>
-      </header>
+    <!-- Header -->
+    <header>
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Besar" />
+      <h1>Arsip Digital</h1>
+      <p>Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</p>
+    </header>
 
-      <section class="tiles">
-        <a href="{{ url_for('dokumen') }}" class="tile red">
-          <i class="fa-solid fa-folder-open"></i>
-          <div>Kelola Dokumen</div>
-        </a>
-        <a href="{{ url_for('kategori') }}" class="tile green">
-          <i class="fa-solid fa-layer-group"></i>
-          <div>Jenis Ijin</div>
-        </a>
-        <a href="{{ url_for('file_manager') }}" class="tile orange">
-          <i class="fa-solid fa-folder-tree"></i>
-          <div>File Manager</div>
-        </a>
-        <a href="{{ url_for('tentang') }}" class="tile blue">
-          <i class="fa-solid fa-circle-info"></i>
-          <div>Tentang</div>
-        </a>
-      </section>
+    <!-- Dashboard Cards -->
+    <div class="dashboard">
+      <a href="{{ url_for('dokumen') }}" class="card-dashboard red">
+        <i class="fa-solid fa-folder-open"></i>
+        <div>Kelola Dokumen</div>
+      </a>
+      <a href="{{ url_for('kategori') }}" class="card-dashboard green">
+        <i class="fa-solid fa-layer-group"></i>
+        <div>Jenis Ijin</div>
+      </a>
+      <a href="{{ url_for('file_manager') }}" class="card-dashboard orange">
+        <i class="fa-solid fa-folder-tree"></i>
+        <div>File Manager</div>
+      </a>
+      <a href="{{ url_for('tentang') }}" class="card-dashboard blue">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>Tentang</div>
+      </a>
     </div>
 
     <!-- Footer -->
