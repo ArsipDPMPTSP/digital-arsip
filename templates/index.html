@@ -75,6 +75,9 @@
         margin-bottom: 15px;
         z-index: 2;
         position: relative;
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeSlideIn 1.2s ease forwards;
       }
 
       header h1 {
@@ -84,6 +87,9 @@
         text-shadow: 0 0 8px #00ffff, 0 0 12px #ff00ff;
         z-index: 2;
         position: relative;
+        opacity: 0;
+        animation: fadeSlideIn 1.5s ease forwards;
+        animation-delay: 0.3s;
       }
 
       header p {
@@ -91,6 +97,20 @@
         opacity: 0.9;
         z-index: 2;
         position: relative;
+        opacity: 0;
+        animation: fadeSlideIn 1.8s ease forwards;
+        animation-delay: 0.6s;
+      }
+
+      @keyframes fadeSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       /* Canvas Wave Multi-layer */
@@ -211,7 +231,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#" data-bs-toggle="tooltip" title="Beranda">
-          <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo" />
+          <img src="{{ url_for('static', filename='img/dpmptsp.png') }}" alt="Logo" style="height: 35px" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
           <span class="navbar-toggler-icon" style="color: #fff"><i class="fa fa-bars"></i></span>
@@ -274,7 +294,7 @@
     <script>
       // Tooltip
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      const tooltipList = [...tooltipTriggerList].map((el) => new bootstrap.Tooltip(el));
+      [...tooltipTriggerList].map((el) => new bootstrap.Tooltip(el));
 
       // Dark mode
       const switchEl = document.getElementById("darkModeSwitch");
@@ -298,7 +318,6 @@
           switchEl.checked = false;
         }
       }
-
       switchEl.addEventListener("change", () => {
         if (switchEl.checked) {
           document.body.classList.add("dark");
@@ -332,7 +351,7 @@
         });
       });
 
-      // Wave Canvas Multi-layer
+      // Wave Canvas Multi-layer + Parallax
       const canvas = document.getElementById("waveCanvas");
       const ctx = canvas.getContext("2d");
       let width, height;
@@ -344,15 +363,18 @@
       resizeCanvas();
 
       let mouseX = 0;
+      let scrollY = 0;
       window.addEventListener("mousemove", (e) => {
         mouseX = e.clientX / width;
       });
+      window.addEventListener("scroll", () => {
+        scrollY = window.scrollY;
+      });
 
-      // 3 layer wave
       const layers = [
-        { amplitude: 15, wavelength: 0.02, speed: 0.002, color: "rgba(255,255,255,0.05)" },
-        { amplitude: 20, wavelength: 0.015, speed: 0.0015, color: "rgba(255,255,255,0.08)" },
-        { amplitude: 25, wavelength: 0.01, speed: 0.001, color: "rgba(255,255,255,0.12)" },
+        { amplitude: 15, wavelength: 0.02, speed: 0.002, color: "rgba(255,255,255,0.05)", parallax: 0.2 },
+        { amplitude: 20, wavelength: 0.015, speed: 0.0015, color: "rgba(255,255,255,0.08)", parallax: 0.4 },
+        { amplitude: 25, wavelength: 0.01, speed: 0.001, color: "rgba(255,255,255,0.12)", parallax: 0.6 },
       ];
 
       function drawWave() {
@@ -362,7 +384,7 @@
           ctx.beginPath();
           ctx.moveTo(0, height);
           for (let x = 0; x < width; x++) {
-            const y = layer.amplitude * Math.sin(x * layer.wavelength + time * layer.speed) + height / 2 + 5 * Math.sin(mouseX * Math.PI * 2);
+            const y = layer.amplitude * Math.sin(x * layer.wavelength + time * layer.speed) + height / 2 + 5 * Math.sin(mouseX * Math.PI * 2) - scrollY * layer.parallax;
             ctx.lineTo(x, y);
           }
           ctx.lineTo(width, height);
